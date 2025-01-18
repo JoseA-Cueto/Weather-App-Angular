@@ -1,20 +1,108 @@
 .weekly-forecast {
-    margin: 20px;
-  }
-  
-  .weekly-forecast table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .weekly-forecast th,
-  .weekly-forecast td {
-    text-align: center;
-    padding: 10px;
-  }
-  
-  .weekly-forecast img {
-    width: 50px;
-    height: 50px;
-  }
+  margin: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.weekly-forecast table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.weekly-forecast th,
+.weekly-forecast td {
+  text-align: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.weekly-forecast th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.weekly-forecast td {
+  background-color: #ffffff;
+  font-size: 14px;
+}
+
+.weekly-forecast img {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.3s ease;
+}
+
+.weekly-forecast img:hover {
+  transform: scale(1.2);
+}
+
+.weather-clear {
+  filter: hue-rotate(0deg); /* Sin cambio de color */
+}
+
+.weather-clouds {
+  filter: hue-rotate(180deg); /* Nubes (tono azul) */
+}
+
+.weather-rain {
+  filter: hue-rotate(120deg); /* Lluvia (tono de azul claro) */
+}
+
+.weather-snow {
+  filter: hue-rotate(240deg); /* Nieve (tono de rosa) */
+}
+
+.weather-thunderstorm {
+  filter: hue-rotate(60deg); /* Tormenta (tono amarillo) */
+}
+
+.weather-drizzle {
+  filter: hue-rotate(60deg); /* Lluvia ligera (tono verde) */
+}
+
+.error {
+  color: red;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-container input,
+.search-container select,
+.search-container button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-container input,
+.search-container select {
+  width: 200px;
+}
+
+.search-container button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #45a049;
+}
+
+
   
