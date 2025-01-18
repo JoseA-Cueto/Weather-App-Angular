@@ -7,13 +7,15 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class WeeklyForecastService {
-   private apiUrl = environment.openWeatherApiUrl;
-   private apiKey = environment.openWeatherApiKey;
+  private apiUrl = environment.openWeatherApiUrl; // URL base
+  private apiKey = environment.openWeatherApiKey; // Clave de la API
 
   constructor(private http: HttpClient) {}
 
-  getWeeklyForecast(city: string): Observable<any> {
-    const url = `${this.apiUrl}?q=${city}&cnt=7&units=metric&appid=${this.apiKey}`;
+  getWeeklyForecast(city: string, country: string): Observable<any> {
+    const url = `${this.apiUrl}/forecast?q=${city},${country}&units=metric&appid=${this.apiKey}`;
     return this.http.get<any>(url);
   }
+  
+  
 }

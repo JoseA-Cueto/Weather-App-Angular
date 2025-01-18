@@ -1,31 +1,51 @@
-<div class="weekly-forecast">
-    <h2>Weekly Weather Forecast</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Day</th>
-          <th>Date</th>
-          <th>Min Temp</th>
-          <th>Max Temp</th>
-          <th>Description</th>
-          <th>Icon</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let day of forecast">
-          <td>{{ day.date | date: 'EEEE' }}</td>
-          <td>{{ day.date | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ day.tempMin }}°C</td>
-          <td>{{ day.tempMax }}°C</td>
-          <td>{{ day.description }}</td>
-          <td>
-            <img
-              [src]="'https://openweathermap.org/img/wn/' + day.icon + '@2x.png'"
-              [alt]="day.description"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="search-container">
+  <select [(ngModel)]="city">
+    <option *ngFor="let city of cities" [value]="city.name">
+      {{ city.name }} ({{ city.country }})
+    </option>
+  </select>
   
+  <select [(ngModel)]="country">
+    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+  </select>
+
+  <button (click)="getForecast(city, country)">Buscar</button>
+</div>
+
+<!-- Tabla de pronóstico -->
+<div *ngIf="forecast.length > 0">
+  <table class="weekly-forecast">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Temp. Max (°C)</th>
+        <th>Temp. Min (°C)</th>
+        <th>Descripción</th>
+        <th>Ícono</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of forecast">
+        <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ item.tempMax }}°C</td>
+        <td>{{ item.tempMin }}°C</td>
+        <td>{{ item.description }}</td>
+        <td>
+          <img
+            [src]="'https://openweathermap.org/img/wn/' + item.icon + '@2x.png'"
+            [ngClass]="item.iconClass"
+            alt="Ícono del clima"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Mensaje de error -->
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
+
+
