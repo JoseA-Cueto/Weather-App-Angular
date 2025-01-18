@@ -1,0 +1,48 @@
+<div class="weather-container">
+  <h1>Weather Information</h1>
+
+  <div class="input-container">
+    <input type="text" [(ngModel)]="city" (input)="getCities()" class="city-input" placeholder="Search for a city...">
+    <button (click)="getWeather()">Get Weather</button>
+
+    <ul *ngIf="cityList.length > 0" class="city-suggestions">
+      <li *ngFor="let city of cityList" (click)="citySelected(city)">
+        {{ city }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="weather-content">
+    <!-- Módulo de clima -->
+    <div *ngIf="weatherData" class="weather-info">
+      <div class="weather-icon">
+        <i class="fas fa-sun"></i>
+      </div>
+      <h2>{{ weatherData.city }}</h2>
+      <div class="temp-info">
+        <p><strong>{{ weatherData.temperature }}°C</strong></p>
+        <p>Humidity: <strong>{{ weatherData.humidity }}%</strong></p>
+        <p>{{ weatherData.description }}</p>
+        <p>Max Temp: <strong>{{ weatherData.tempMax }}°C</strong></p>
+        <p>Min Temp: <strong>{{ weatherData.tempMin }}°C</strong></p>
+        <p>Wind Speed: <strong>{{ weatherData.windSpeed }} m/s</strong></p>
+      </div>
+    </div>
+
+    <div *ngIf="weatherData" class="weather-chart">
+      <canvas id="weatherChart"></canvas> <!-- Este es el id donde se debe renderizar el gráfico -->
+    </div>
+    
+    <div *ngIf="errorMessage" class="error-message-container">
+      <div class="error-message-icon">
+        <i class="fas fa-times-circle"></i> <!-- Icono de error -->
+      </div>
+      <div class="error-message-text">
+        {{ errorMessage }}
+      </div>
+      <button class="error-message-close" (click)="closeErrorMessage()">&times;</button>
+    </div>
+    
+  </div>
+</div>
+

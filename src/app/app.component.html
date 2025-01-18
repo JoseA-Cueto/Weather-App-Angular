@@ -1,0 +1,30 @@
+<div class="layout">
+  <div class="sidebar" (mouseover)="expandSidebar()" (mouseleave)="collapseSidebar()">
+    <h2 class="sidebar-title" *ngIf="isSidebarExpanded">Weather App</h2>
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/home" routerLinkActive="active">
+          <i class="fas fa-house"></i> <span *ngIf="isSidebarExpanded">Home</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/current-weather" routerLinkActive="active">
+          <i class="fas fa-cloud"></i> <span *ngIf="isSidebarExpanded">Current Weather</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/weekly-forecast" routerLinkActive="active">
+          <i class="fas fa-calendar-day"></i> <span *ngIf="isSidebarExpanded">Weekly Forecast</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active">
+          <i class="fas fa-info-circle"></i> <span *ngIf="isSidebarExpanded">About</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

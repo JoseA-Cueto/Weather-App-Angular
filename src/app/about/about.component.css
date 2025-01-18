@@ -1,0 +1,75 @@
+.about-container {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  font-family: 'Arial', sans-serif;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 20px;
+  justify-content: center; /* Centra el contenido verticalmente */
+  align-items: center; /* Centra el contenido horizontalmente */
+  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+}
+
+.about-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.about-container p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.features-section h2 {
+  margin-top: 20px;
+  font-size: 1.8rem;
+  text-decoration: underline;
+}
+
+.features-section ul {
+  list-style-type: disc;
+  text-align: left;
+  margin: 20px auto;
+  max-width: 400px;
+  font-size: 1rem;
+}
+
+.features-section li {
+  margin: 10px 0;
+}
+
+.button-section {
+  margin-top: 30px;
+}
+
+.button-section .btn-primary,
+.button-section .btn-secondary {
+  display: inline-block;
+  padding: 30px 40px;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+.button-section .btn-primary {
+  background-color: #0cf500;
+}
+
+.button-section .btn-secondary {
+  background-color: #d10202;
+}
+
+.button-section .btn-primary:hover {
+  background-color: #163906;
+}
+
+.button-section .btn-secondary:hover {
+  background-color: #5c0404;
+}

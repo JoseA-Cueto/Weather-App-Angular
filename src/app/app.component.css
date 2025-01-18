@@ -1,0 +1,101 @@
+/* Layout General */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+}
+
+/* Barra lateral */
+.sidebar {
+  background: linear-gradient(135deg, #c0d9e8, #4facfe); /* Degradado de azul nublado a azul brillante */
+  color: #000;  /* Color de letra negro */
+  width: 60px; /* Tamaño colapsado */
+  transition: width 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar:hover {
+  width: 250px; /* Tamaño expandido */
+}
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px 0;
+  text-transform: uppercase;
+  text-align: center;
+  color: #000; /* Color de la letra en la barra lateral */
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.nav-links li {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000; /* Color de las letras de los enlaces en negro */
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: background 0.3s ease, padding 0.3s ease;
+}
+
+.nav-links a i {
+  margin-right: 10px;
+  font-size: 20px;
+  min-width: 30px; /* Para alinear íconos */
+}
+
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-links a.active {
+  background: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+/* Contenido principal */
+.content {
+  flex: 1;
+  background: #f4f4f9;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Estilo para los iconos de la barra lateral */
+.sidebar i {
+  font-size: 24px;
+  color: #000; /* Color de los iconos en la barra lateral */
+  margin-right: 10px;
+}
+
+/* Enlace en la barra lateral */
+.sidebar a {
+  color: #000; /* Color de texto de los enlaces */
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background-color: #ffb900; /* Color de fondo al pasar el mouse */
+}
