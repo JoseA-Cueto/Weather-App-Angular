@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Chart } from 'chart.js';  
+import { Chart } from 'chart.js';
 import { environment } from '../../../environments/environment';
+import { CitySuggestion, WeatherData } from '../../models/weather/weather.model';
+
 
 @Component({
   selector: 'app-weather',
@@ -12,11 +14,11 @@ import { environment } from '../../../environments/environment';
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
-export class WeatherComponent implements OnInit {  
+export class WeatherComponent implements OnInit {
   city: string = '';
-  weatherData: any = null;
+  weatherData: WeatherData | null = null; 
   errorMessage: string = '';
-  cityList: string[] = [];
+  cityList: CitySuggestion[] = []; 
 
   constructor(private http: HttpClient) {}
 
@@ -29,13 +31,12 @@ export class WeatherComponent implements OnInit {
     if (this.city) {
       const apiKey = environment.openWeatherApiKey;
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${apiKey}&units=metric`;
-      
 
       this.http.get(apiUrl).subscribe(
         (data: any) => {
-          console.log('Datos obtenidos de la API:', data); // Verifica los datos
+          console.log('Datos obtenidos de la API:', data);
 
-          // Guardamos los datos relevantes para mostrarlos en la vista
+          // Mapeamos los datos de la API al modelo WeatherData
           this.weatherData = {
             city: data.name,
             description: data.weather[0].description,
@@ -43,8 +44,10 @@ export class WeatherComponent implements OnInit {
             humidity: data.main.humidity,
             tempMax: data.main.temp_max,
             tempMin: data.main.temp_min,
-            windSpeed: data.wind.speed
+            windSpeed: data.wind.speed,
+            icon: data.weather[0].icon // Asignación del ícono
           };
+          
           this.errorMessage = '';
         },
         (error) => {
@@ -63,7 +66,10 @@ export class WeatherComponent implements OnInit {
 
       this.http.get(apiUrl).subscribe(
         (data: any) => {
-          this.cityList = data.list.map((city: any) => city.name);
+          // Mapeamos los datos al modelo CitySuggestion
+          this.cityList = data.list.map((city: any) => ({
+            name: city.name
+          }));
         },
         (error) => {
           console.error('Error al obtener las ciudades:', error);
@@ -75,30 +81,36 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  citySelected(city: string): void {
-    this.city = city;  // Actualiza el campo de texto con la ciudad seleccionada
-    this.getWeather();  // Llama al método getWeather para obtener los datos del clima de esa ciudad
-    this.cityList = [];  // Limpiar la lista de sugerencias después de seleccionar la ciudad
+  citySelected(city: CitySuggestion): void {
+    this.city = city.name; 
+    this.getWeather();      // Obtiene los datos del clima
+    this.cityList = [];     // Limpia la lista de sugerencias
   }
 
-  // Método para crear el gráfico estático (simulación de datos)
   createWeatherChart() {
+    // Inicialización del gráfico (por ahora con datos estáticos)
     const weatherChart = new Chart('weatherChart', {
-      type: 'bar',  // Tipo de gráfico
+      type: 'line',  // Cambia a gráfico de línea para representar mejor los datos de temperatura
       data: {
         labels: ['Today', 'Tomorrow', 'Day 3', 'Day 4', 'Day 5'],  // Etiquetas
         datasets: [{
           label: 'Temperature (°C)',  // Leyenda del gráfico
-          data: [30, 28, 29, 31, 32],  // Temperaturas estáticas para el gráfico (puedes cambiar estos valores)
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Color de las barras
-          borderColor: 'rgba(75, 192, 192, 1)',  // Color del borde
-          borderWidth: 1
+          data: [30, 28, 29, 31, 32],  // Temperaturas estáticas para el gráfico
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Color de fondo
+          borderColor: 'rgba(75, 192, 192, 1)',  // Color de la línea
+          borderWidth: 2
         }]
       },
       options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top'
+          }
+        },
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: false
           }
         }
       }
@@ -106,7 +118,7 @@ export class WeatherComponent implements OnInit {
   }
 
   closeErrorMessage() {
-    this.errorMessage = ''; 
+    this.errorMessage = '';
   }
 }
 

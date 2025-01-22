@@ -1,51 +1,36 @@
-<div class="search-container">
-  <select [(ngModel)]="city">
-    <option *ngFor="let city of cities" [value]="city.name">
-      {{ city.name }} ({{ city.country }})
-    </option>
-  </select>
-  
-  <select [(ngModel)]="country">
-    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
-  </select>
+<div class="forecast-container">
+  <div class="error-message" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
 
-  <button (click)="getForecast(city, country)">Buscar</button>
+  <div *ngIf="forecast.length > 0" class="forecast-table">
+    <h2>Pronóstico Semanal para {{ city }}, {{ country }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Temp. Máxima (°C)</th>
+          <th>Temp. Mínima (°C)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let day of forecast">
+          <td>{{ day.date | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <div class="weather-description">
+              <img [src]="'https://openweathermap.org/img/wn/' + day.icon + '@2x.png'" alt="icono clima" />
+              {{ day.description }}
+            </div>
+          </td>
+          <td>{{ day.tempMax }}°C</td>
+          <td>{{ day.tempMin }}°C</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<!-- Tabla de pronóstico -->
-<div *ngIf="forecast.length > 0">
-  <table class="weekly-forecast">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Temp. Max (°C)</th>
-        <th>Temp. Min (°C)</th>
-        <th>Descripción</th>
-        <th>Ícono</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of forecast">
-        <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ item.tempMax }}°C</td>
-        <td>{{ item.tempMin }}°C</td>
-        <td>{{ item.description }}</td>
-        <td>
-          <img
-            [src]="'https://openweathermap.org/img/wn/' + item.icon + '@2x.png'"
-            [ngClass]="item.iconClass"
-            alt="Ícono del clima"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- Mensaje de error -->
-<div *ngIf="errorMessage" class="error">
-  {{ errorMessage }}
-</div>
 
 
 
