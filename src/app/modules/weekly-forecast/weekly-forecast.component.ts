@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { WeeklyForecastService } from '../../service/weekly-forecast/weekly-forecast.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Chart } from 'chart.js';
+import { WeeklyForecastService } from '../../core/services/weekly-forecast/weekly-forecast.service';
+import { ForecastItem } from '../../models/weekly-forecast/weekly-forecast.model';
+
 
 @Component({
   selector: 'app-weekly-forecast',
@@ -12,14 +15,12 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [CommonModule, FormsModule, HttpClientModule],
 })
 export class WeeklyForecastComponent implements OnInit {
-  forecast: any[] = [];
+  forecast: ForecastItem[] = [];
   errorMessage: string = '';
-  city: string = '';  // Variable para la ciudad seleccionada
-  country: string = '';  // Variable para el país seleccionado
-  countries: string[] = ['US', 'GB', 'ES', 'FR', 'DE']; // Ejemplo de países para elegir
-
-  // Lista de ciudades disponibles con sus respectivos países
-  cities: { name: string, code: string, country: string }[] = [
+  city: string = '';
+  country: string = '';
+  countries: string[] = ['US', 'GB', 'ES', 'FR', 'DE'];
+  cities: { name: string; code: string; country: string }[] = [
     { name: 'New York', code: 'NYC', country: 'US' },
     { name: 'Los Angeles', code: 'LA', country: 'US' },
     { name: 'London', code: 'LON', country: 'GB' },
@@ -31,13 +32,11 @@ export class WeeklyForecastComponent implements OnInit {
   constructor(private weeklyForecastService: WeeklyForecastService) {}
 
   ngOnInit(): void {
-    // Ciudad y país por defecto
-    this.city = 'London'; 
-    this.country = 'GB'; 
-    this.getForecast(this.city, this.country);  
+    this.city = 'London';
+    this.country = 'GB';
+    this.getForecast(this.city, this.country);
   }
 
-  // Método para obtener el pronóstico con ciudad y país
   getForecast(city: string, country: string): void {
     if (!city || !country) {
       this.errorMessage = 'Por favor, ingresa una ciudad y selecciona un país.';
@@ -46,26 +45,21 @@ export class WeeklyForecastComponent implements OnInit {
 
     this.weeklyForecastService.getWeeklyForecast(city, country).subscribe({
       next: (data: any) => {
-        console.log('Datos obtenidos de la API:', data); // Para depuración
-
-        // Agrupar los datos por fecha
         const groupedByDay: any = {};
 
         data.list.forEach((item: any) => {
-          const date = item.dt_txt.split(' ')[0]; // Extrae solo la fecha (YYYY-MM-DD)
+          const date = item.dt_txt.split(' ')[0];
           if (!groupedByDay[date]) {
             groupedByDay[date] = [];
           }
           groupedByDay[date].push(item);
         });
 
-        // Procesar los datos para agregar temperatura máxima, mínima y otras propiedades
         this.forecast = Object.keys(groupedByDay).map((date) => {
           const items = groupedByDay[date];
           const description = items[0].weather[0].description;
           let iconClass = '';
 
-          // Asignar la clase correspondiente según la descripción del clima
           if (description.includes('clear')) {
             iconClass = 'weather-clear';
           } else if (description.includes('cloud')) {
@@ -81,20 +75,67 @@ export class WeeklyForecastComponent implements OnInit {
           }
 
           return {
-            date: new Date(date), // Fecha del día
-            tempMax: Math.max(...items.map((i: any) => i.main.temp_max)), // Temp máxima
-            tempMin: Math.min(...items.map((i: any) => i.main.temp_min)), // Temp mínima
-            description: items[0].weather[0].description, // Descripción del clima
-            icon: items[0].weather[0].icon, // Ícono (del primer elemento)
-            iconClass: iconClass, // Clase que cambia el color del ícono
+            date: new Date(date),
+            tempMax: Math.max(...items.map((i: any) => i.main.temp_max)),
+            tempMin: Math.min(...items.map((i: any) => i.main.temp_min)),
+            description,
+            icon: items[0].weather[0].icon,
+            iconClass,
           };
         });
 
+        this.createForecastChart(); // Crear el gráfico con los datos procesados
         this.errorMessage = '';
       },
       error: (err) => {
         console.error('Error al obtener el pronóstico:', err);
-        this.errorMessage = 'Error al obtener los datos del pronóstico. Por favor, verifica la ciudad o intenta más tarde.';
+        this.errorMessage =
+          'Error al obtener los datos del pronóstico. Por favor, verifica la ciudad o intenta más tarde.';
+      },
+    });
+  }
+
+  createForecastChart(): void {
+    const labels = this.forecast.map((item) =>
+      item.date.toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: '2-digit' })
+    );
+
+    const tempMaxData = this.forecast.map((item) => item.tempMax);
+    const tempMinData = this.forecast.map((item) => item.tempMin);
+
+    new Chart('forecastChart', {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Temp. Máxima (°C)',
+            data: tempMaxData,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderWidth: 2,
+          },
+          {
+            label: 'Temp. Mínima (°C)',
+            data: tempMinData,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+          },
+        },
       },
     });
   }

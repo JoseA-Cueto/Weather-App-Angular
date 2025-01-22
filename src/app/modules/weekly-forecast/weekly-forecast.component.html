@@ -4,7 +4,7 @@
       {{ city.name }} ({{ city.country }})
     </option>
   </select>
-  
+
   <select [(ngModel)]="country">
     <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
   </select>
@@ -12,40 +12,16 @@
   <button (click)="getForecast(city, country)">Buscar</button>
 </div>
 
-<!-- Tabla de pronóstico -->
+<!-- Gráfico del pronóstico -->
 <div *ngIf="forecast.length > 0">
-  <table class="weekly-forecast">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Temp. Max (°C)</th>
-        <th>Temp. Min (°C)</th>
-        <th>Descripción</th>
-        <th>Ícono</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of forecast">
-        <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ item.tempMax }}°C</td>
-        <td>{{ item.tempMin }}°C</td>
-        <td>{{ item.description }}</td>
-        <td>
-          <img
-            [src]="'https://openweathermap.org/img/wn/' + item.icon + '@2x.png'"
-            [ngClass]="item.iconClass"
-            alt="Ícono del clima"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <canvas id="forecastChart"></canvas>
 </div>
 
 <!-- Mensaje de error -->
 <div *ngIf="errorMessage" class="error">
   {{ errorMessage }}
 </div>
+
 
 
 
