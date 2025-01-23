@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Chart } from 'chart.js';
 import { WeeklyForecastService } from '../../core/services/weekly-forecast/weekly-forecast.service';
 import { ForecastItem } from '../../models/weekly-forecast/weekly-forecast.model';
-
 
 @Component({
   selector: 'app-weekly-forecast',
@@ -28,6 +26,7 @@ export class WeeklyForecastComponent implements OnInit {
     { name: 'Paris', code: 'PAR', country: 'FR' },
     { name: 'Berlin', code: 'BER', country: 'DE' },
   ];
+  cityList: { name: string; country: string }[] = [];
 
   constructor(private weeklyForecastService: WeeklyForecastService) {}
 
@@ -84,7 +83,6 @@ export class WeeklyForecastComponent implements OnInit {
           };
         });
 
-        this.createForecastChart(); // Crear el gráfico con los datos procesados
         this.errorMessage = '';
       },
       error: (err) => {
@@ -94,52 +92,8 @@ export class WeeklyForecastComponent implements OnInit {
       },
     });
   }
-
-  createForecastChart(): void {
-    const labels = this.forecast.map((item) =>
-      item.date.toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: '2-digit' })
-    );
-
-    const tempMaxData = this.forecast.map((item) => item.tempMax);
-    const tempMinData = this.forecast.map((item) => item.tempMin);
-
-    new Chart('forecastChart', {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Temp. Máxima (°C)',
-            data: tempMaxData,
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderWidth: 2,
-          },
-          {
-            label: 'Temp. Mínima (°C)',
-            data: tempMinData,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderWidth: 2,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: false,
-          },
-        },
-      },
-    });
-  }
 }
+
 
 
 
