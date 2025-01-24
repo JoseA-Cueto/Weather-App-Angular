@@ -1,13 +1,19 @@
+/* Contenedor de la previsión */
 .forecast-container {
   margin: 20px;
   font-family: Arial, sans-serif;
+  background: linear-gradient(to top, #00c6ff, #0072ff); /* Fondo degradado de azul */
+  border-radius: 15px;
+  padding: 20px;
 }
 
+/* Título de la previsión */
 h2 {
   text-align: center;
   color: #2c3e50;
 }
 
+/* Estilos para la tabla de previsión */
 .forecast-table {
   margin-top: 20px;
   border-collapse: collapse;
@@ -43,6 +49,7 @@ tr:hover {
   background-color: #ddd;
 }
 
+/* Descripción del clima */
 .weather-description {
   display: flex;
   align-items: center;
@@ -55,9 +62,11 @@ tr:hover {
   height: 30px;
 }
 
+/* Mensaje de error */
 .error-message {
   color: red;
   font-size: 18px;
   text-align: center;
   margin-top: 20px;
 }
+
