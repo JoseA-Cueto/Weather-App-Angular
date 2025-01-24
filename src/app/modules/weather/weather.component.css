@@ -4,7 +4,7 @@
   width: 100%;
   height: 100vh;
   min-height: 500px;
-  background-color: #f9f9f9; /* Establece un fondo más neutro */
+  background: linear-gradient(to top, #00c6ff, #0072ff); /* Fondo degradado de azul, para un clima claro */
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -260,3 +260,4 @@ tr:hover {
 .error-message-close:hover {
   background-color: #d32f2f; 
 }
+
